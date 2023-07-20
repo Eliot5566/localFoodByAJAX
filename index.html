@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>農村地方美食小吃特色料理</title>
+    <style>
+       
+        body{
+            background-color: lightpink;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border-radius: 25%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 美食資料in table -->
+
+
+    <script>
+        var page = 1;
+        var xhttp = new XMLHttpRequest();
+
+        //抓取頁面資料
+        //callback function
+
+        function fetchPageData() {
+            xhttp.onreadystatechange = callback;
+            var url = 'brad48.php?page=' + page;
+
+            xhttp.open('get', url, true);
+            xhttp.send();
+            //ajax 48
+
+        }
+        function callback() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                //使用JSON.parse 解析傳回的JSON資料
+                var table = document.getElementById("table");
+                // 清空表格的子元素（除了表头）
+                while (table.rows.length > 1) {
+                    table.deleteRow(1);
+
+                }
+                // while(table.rows.length < 1){
+
+                // }
+
+
+                var root = JSON.parse(xhttp.responseText);
+
+                // console.log(root.length);
+                for (var i = 0; i < root.length; i++) {
+                    var row = root[i];
+                    console.log(row.id + ":" + row.name);
+                    var tr = document.createElement('tr');
+
+                    var td_id = document.createElement('td');
+                    td_id.innerText = row.id;
+                    //將td_id插入 tr 
+                    tr.appendChild(td_id);
+
+
+
+                    var td_name = document.createElement('td');
+                    td_name.innerText = row.name;
+                    //將td_id插入 tr 
+                    tr.appendChild(td_name);
+
+
+                    var td_tel = document.createElement('td');
+                    td_tel.innerText = row.tel;
+                    //將td_id插入 tr 
+                    tr.appendChild(td_tel);
+
+
+                    // var td_pic = document.createElement('td');
+                    // td_pic.innerText ="<img src= 'row.pic'>";
+                    // //將td_id插入 tr 
+                    // tr.appendChild(td_pic);
+
+
+                    var td_pic = document.createElement('td');
+                    var img = document.createElement('img');
+                    img.src = row.pic; // 设置图片的路径
+                    img.style.width = '250px'; // 设置图片宽度
+                    img.style.height = 'auto'; // 设置图片高度自适应
+                    td_pic.appendChild(img); // 将图片元素插入到 td 元素中
+                    tr.appendChild(td_pic); // 将 td 元素插入到 tr 元素中
+
+
+
+
+                    //將以上tr 插入table
+                    table.appendChild(tr);
+
+
+                }
+            }
+        }
+
+
+        //上一頁
+        function prev() {
+            page--;
+            fetchPageData();
+        }
+        //下一頁
+        function next() {
+            page++;
+            fetchPageData();
+        }
+
+        //預設執行時也要抓取頁面資料
+        fetchPageData();
+    </script>
+
+    <h1>農村地方美食小吃特色料理</h1>
+    <hr>
+
+    <input type="button" value="Prev" onclick="prev()">
+    <input type="button" value="Next" onclick="next()">
+    <hr>
+
+    <table id="table" border="1" width='100%'>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th class="imgS">Image</th>
+        </tr>
+    </table>
+</body>
+
+</html>
